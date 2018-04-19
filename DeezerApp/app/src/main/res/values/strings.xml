@@ -2,4 +2,6 @@
     <string name="app_name">DeezerApplication</string>
     <string name="play">PLAY</string>
     <string name="pause">PAUSE</string>
+    <string name="nomArtiste">Nom de l\'artiste</string>
+    <string name="chercher">Chercher</string>
 </resources>
