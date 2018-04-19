@@ -1,5 +1,6 @@
 package com.projet4a.ensim.deezerapplication;
 
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,22 +39,25 @@ public class MainActivity extends AppCompatActivity {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Response.Listener<DataSearchAuthor> responseListener = new Response.Listener<DataSearchAuthor>() {
-                    @Override
-                    public void onResponse(DataSearchAuthor response) {
-                        Log.d(TAG,response.toString());
-                        ArtistAdapteur adapteur=new ArtistAdapteur(MainActivity.this,response.getData());
-                        mRecyclerView.setAdapter(adapteur);
-                    }
-                };
-                Response.ErrorListener errorListener=new Response.ErrorListener(){
+                if(!edtText.getText().toString().replace(" ","").isEmpty()){
+                    Response.Listener<DataSearchAuthor> responseListener = new Response.Listener<DataSearchAuthor>() {
+                        @Override
+                        public void onResponse(DataSearchAuthor response) {
+                            Log.d(TAG,response.toString());
+                            ArtistAdapteur adapteur=new ArtistAdapteur(MainActivity.this,response.getData());
+                            mRecyclerView.setAdapter(adapteur);
+                        }
+                    };
+                    Response.ErrorListener errorListener=new Response.ErrorListener(){
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG,"VolleyError");
-                    }
-                };
-                DeezerService.INSTANCE.searchAuthor(edtText.getText().toString(), responseListener, errorListener,MainActivity.this);
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d(TAG,"VolleyError");
+                        }
+                    };
+                    DeezerService.INSTANCE.searchAuthor(Uri.encode(edtText.getText().toString().replace("é","e").replace("è","e").replace("ê","e").replace("'","")), responseListener, errorListener,MainActivity.this);
+
+                }
             }
         });
 

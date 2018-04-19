@@ -1,6 +1,7 @@
 package com.projet4a.ensim.deezerapplication;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -54,7 +55,7 @@ public class AlbumActivity extends AppCompatActivity {
                     Log.d(TAG, "VolleyError");
                 }
             };
-            DeezerService.INSTANCE.searchAlbum(nomArtiste, responseListener, errorListener, this);
+            DeezerService.INSTANCE.searchAlbum(Uri.encode(nomArtiste.replace("é","e").replace("è","e").replace("ê","e").replace("'","")), responseListener, errorListener, this);
         }
     }
 }
