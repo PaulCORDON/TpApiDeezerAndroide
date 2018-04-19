@@ -2,6 +2,7 @@ package adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.projet4a.ensim.deezerapplication.TrackActivity;
 import com.projet4a.ensim.deezerapplication.service.Track;
 
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -27,7 +29,7 @@ public class TrackAdapteur extends RecyclerView.Adapter<TrackAdapteur.ViewHolder
     final Intent intent;
     private Context c;
     private static final String TAG = "TrackAdapteur";
-    private static MediaPlayer mP;
+    private static MediaPlayer mP= new MediaPlayer();
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView mTextView;
@@ -72,12 +74,20 @@ public class TrackAdapteur extends RecyclerView.Adapter<TrackAdapteur.ViewHolder
             public void onClick(View v) {
                 Log.d(TAG,"click on play"+track.getPreview());
 
-                mP=MediaPlayer.create(c, Uri.parse(track.getPreview()));
                 if(mP.isPlaying()){
                     mP.stop();
+                    mP.reset();
+                    
                 }
                 else{
-                    mP.start();
+                    try {
+
+                        mP.setDataSource(c, Uri.parse(track.getPreview()));
+                        mP.prepare();
+                        mP.start();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }

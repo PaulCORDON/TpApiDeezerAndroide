@@ -21,6 +21,8 @@ import adapter.TrackAdapteur;
 
 public class TrackActivity extends AppCompatActivity {
     private static final String TAG = "TrackActivity";
+
+
     private String CoverAlbum;
     private int idAlbum;
     private ImageView albumCover;
