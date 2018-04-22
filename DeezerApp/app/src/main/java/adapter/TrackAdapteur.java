@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.projet4a.ensim.deezerapplication.R;
@@ -29,16 +31,27 @@ public class TrackAdapteur extends RecyclerView.Adapter<TrackAdapteur.ViewHolder
     final Intent intent;
     private Context c;
     private static final String TAG = "TrackAdapteur";
+
+    public static MediaPlayer getmP() {
+        return mP;
+    }
+
     private static MediaPlayer mP= new MediaPlayer();
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView mTextView;
+        public ProgressBar progressBar;
+        public ImageView btnPlay;
+        public ImageView btnPause;
 
         public View v;
         public ViewHolder(View itemView) {
             super(itemView);
             this.v=itemView;
             mTextView = v.findViewById(R.id.nameTrack);
+            progressBar = v.findViewById(R.id.progressBar);
+            btnPlay = v.findViewById(R.id.BtnPlay);
+            btnPause = v.findViewById(R.id.BtnPause);
 
         }
     }
@@ -63,7 +76,7 @@ public class TrackAdapteur extends RecyclerView.Adapter<TrackAdapteur.ViewHolder
 
 
     @Override
-    public void onBindViewHolder(@NonNull TrackAdapteur.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final TrackAdapteur.ViewHolder holder, int position) {
         final Track track=mDataset.get(position);
         Log.d(TAG, "url : " + track.getTitle());
         // - get element from your dataset at this position
@@ -75,13 +88,18 @@ public class TrackAdapteur extends RecyclerView.Adapter<TrackAdapteur.ViewHolder
                 Log.d(TAG,"click on play"+track.getPreview());
 
                 if(mP.isPlaying()){
+                    holder.btnPlay.setVisibility(View.VISIBLE);
+                    holder.btnPause.setVisibility(View.INVISIBLE);
+
                     mP.stop();
                     mP.reset();
-                    
+
                 }
                 else{
                     try {
-
+                        holder.btnPlay.setVisibility(View.INVISIBLE);
+                        holder.btnPause.setVisibility(View.VISIBLE);
+                        
                         mP.setDataSource(c, Uri.parse(track.getPreview()));
                         mP.prepare();
                         mP.start();

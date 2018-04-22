@@ -26,7 +26,7 @@ public class TrackActivity extends AppCompatActivity {
     private String CoverAlbum;
     private int idAlbum;
     private ImageView albumCover;
-
+    TrackAdapteur adapteur;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +51,7 @@ public class TrackActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(DataSearchAlbum.Tracks response) {
                     Log.d(TAG, response.toString());
-                    TrackAdapteur adapteur = new TrackAdapteur(TrackActivity.this, response.getData());
+                    adapteur = new TrackAdapteur(TrackActivity.this, response.getData());
                     mRecyclerView.setAdapter(adapteur);
                 }
             };
@@ -65,4 +65,16 @@ public class TrackActivity extends AppCompatActivity {
             DeezerService.INSTANCE.searchTrack(idAlbum, responseListener, errorListener, this);
 
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG+" OnStop","normalment il y a plus de musique");
+        adapteur.getmP().reset();
+
+
+    }
+
+
+
 }
